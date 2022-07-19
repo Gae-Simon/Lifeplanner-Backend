@@ -5,11 +5,19 @@ const { mongoose } = require('./db/mongoose');
 
 const bodyParser = require('body-parser');
 
+const cors = require('cors');
+
+
+
 // Load models
 const { List, Task } = require('./db/models');
 
 // Load middleware
 app.use(bodyParser.json());
+app.use(cors());
+
+
+
 
 /* ROUTE HANDLERS */
 
@@ -145,6 +153,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
         res.send(removedTaskDoc)
     });
 });
+
 
 app.listen(3000, () => {
     console.log("Server is listening on Port 3000")
