@@ -76,11 +76,19 @@ app.patch('/lists/:id', (req, res) => {
 
 app.delete('/lists/:id', (req, res) => {
     // We want to delete a specific list element (element is specified in the url)
+
     List.findOneAndRemove({
         _id: req.params.id
     }).then((removedListDoc) => {
         res.send(removedListDoc);
+
+        deleteTasksFromList(removedListDoc._id); 
+
     });
+
+
+    
+
 });
 
 /*
@@ -153,6 +161,18 @@ app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
         res.send(removedTaskDoc)
     });
 });
+
+
+
+/* HELPER METHODS */
+let deleteTasksFromList = (_listId) => {
+    Task.deleteMany({
+        _listId
+    }).then(() => {
+        console.log("Tasks from " + _listId + " were deleted!");
+    })
+}
+
 
 
 app.listen(3000, () => {
