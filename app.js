@@ -28,7 +28,7 @@ app.use(cors());
 *   Purpose: Get all lists
 */
 
-app.get('/lists', (req, res) => {
+app.get('/task-manager/lists', (req, res) => {
     // Return an array with all elements in the database
     List.find({}).then((lists) => {
         res.send(lists);
@@ -41,7 +41,7 @@ app.get('/lists', (req, res) => {
 *   Purpose: Create a new list
 */
 
-app.post('/lists', (req, res) => {
+app.post('/task-manager/lists', (req, res) => {
     // Create a new list and return the new list document back to the user
     // List information will be passed via the JSON request body
     let title = req.body.title;
@@ -60,7 +60,7 @@ app.post('/lists', (req, res) => {
 *   Purpose: Update a list element (specified by the id)
 */
 
-app.patch('/lists/:id', (req, res) => {
+app.patch('/task-manager/lists/:id', (req, res) => {
     // We want to update the specified list element with new values in the JSON body
     List.findOneAndUpdate({_id: req.params.id }, {
         $set: req.body
@@ -74,7 +74,7 @@ app.patch('/lists/:id', (req, res) => {
 *   Purpose: Delete an list element (specified by the id)
 */
 
-app.delete('/lists/:id', (req, res) => {
+app.delete('/task-manager/lists/:id', (req, res) => {
     // We want to delete a specific list element (element is specified in the url)
 
     List.findOneAndRemove({
@@ -96,7 +96,7 @@ app.delete('/lists/:id', (req, res) => {
 *   Purpose: Get all tasks of one list
 */
 
-app.get('/lists/:listId/tasks', (req, res) => {
+app.get('/task-manager/lists/:listId/tasks', (req, res) => {
     // We want all tasks of one specific list
     Task.find({
         _listId: req.params.listId
@@ -105,7 +105,7 @@ app.get('/lists/:listId/tasks', (req, res) => {
     });
 });
 
-app.get('/lists/:listId/tasks/:taskId', (req, res) => {
+app.get('/task-manager/lists/:listId/tasks/:taskId', (req, res) => {
     // We want one task from on list
     Task.findOne({
         _id: req.params.taskId,
@@ -120,7 +120,7 @@ app.get('/lists/:listId/tasks/:taskId', (req, res) => {
 *   Purpose: Create a new task
 */
 
-app.post('/lists/:listId/tasks', (req, res) => {
+app.post('/task-manager/lists/:listId/tasks', (req, res) => {
     // We want to create a new task in the list
     let newTask = new Task({
         title: req.body.title,
@@ -136,7 +136,7 @@ app.post('/lists/:listId/tasks', (req, res) => {
 *   Purpose: Update an existing task
 */
 
-app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
+app.patch('/task-manager/lists/:listId/tasks/:taskId', (req, res) => {
     Task.findOneAndUpdate({
         _id: req.params.taskId,
         _listId: req.params.listId
@@ -153,7 +153,7 @@ app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
 *   Purpose: Delete an existing task
 */
 
-app.delete('/lists/:listId/tasks/:taskId', (req, res) => {
+app.delete('/task-manager/lists/:listId/tasks/:taskId', (req, res) => {
     Task.findOneAndRemove({
         _id: req.params.taskId,
         _listId: req.params.listId
