@@ -10,7 +10,7 @@ const cors = require('cors');
 
 
 // Load models
-const { List, Task } = require('./db/models');
+const { List, Task, Note } = require('./db/models');
 
 // Load middleware
 app.use(bodyParser.json());
@@ -18,10 +18,13 @@ app.use(cors());
 
 
 
+/*
+*
+* ------------ API FOR TASKS ------------
+* /task-manager/***
+*
+*/
 
-/* ROUTE HANDLERS */
-
-/* LIST ROUTES */
 
 /*
 *   GET /lists
@@ -172,6 +175,74 @@ let deleteTasksFromList = (_listId) => {
         console.log("Tasks from " + _listId + " were deleted!");
     })
 }
+
+
+/*
+*
+* ------------ API FOR NOTES ------------
+* /notes/***
+*
+*/
+
+/*
+*   GET /note-collection 
+*   Purpose: Get all notes
+*/
+
+app.get('/notes/note-collection', (req, res) => {
+    Note.find({}).then((notes) => {
+        res.send(notes);
+    });
+});
+
+/*
+*   POST /note-collection
+*   Purpose: Create a new note
+*/
+
+app.post('/notes/note-collection', (req, res) => {
+    let title = req.body.title;
+    let content = req.body.content;
+
+    let newNote = new Note({
+        title,
+        content
+    });
+
+    newNote.save().then((noteDoc) => {
+        res.send(noteDoc);
+    });
+});
+
+/*
+*   PATCH /note-collection/:id
+*   Purpose: Update a note element (specified by the id)
+*/
+
+app.patch('/notes/note-collection/:id', (req, res) => {
+    Note.findOneAndUpdate({
+        _id: req.params.id
+    }, {
+        $set: req.body
+    }).then(() => {
+        res.sendStatus(200);
+    });
+});
+
+/*
+*   DELETE /note-collection/:id
+*   Purpose: Delete a note element (specified by the id)
+*/
+
+app.delete('/notes/note-collection/:id', (req, res) => {
+    
+    Note.findOneAndDelete({
+        _id: req.params.id
+    }).then((removedNoteDoc) => {
+        res.send(removedNoteDoc);
+    })
+})
+
 
 
 
