@@ -196,6 +196,19 @@ app.get('/notes/note-collection', (req, res) => {
 });
 
 /*
+*   GET /note-collection 
+*   Purpose: Get one specific note
+*/
+
+app.get('/notes/note-collection/:noteId', (req, res) => {
+    Note.findOne({
+        _id: req.params.noteId
+    }).then((note) => {
+        res.send(note);
+    });
+});
+
+/*
 *   POST /note-collection
 *   Purpose: Create a new note
 */
@@ -225,7 +238,7 @@ app.patch('/notes/note-collection/:id', (req, res) => {
     }, {
         $set: req.body
     }).then(() => {
-        res.sendStatus(200);
+        res.send({message: "Updated successfully!"});
     });
 });
 
