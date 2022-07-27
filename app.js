@@ -127,7 +127,8 @@ app.post('/task-manager/lists/:listId/tasks', (req, res) => {
     // We want to create a new task in the list
     let newTask = new Task({
         title: req.body.title,
-        _listId: req.params.listId
+        _listId: req.params.listId,
+        description: req.body.description
     });
     newTask.save().then((newTaskDoc) => {
         res.send(newTaskDoc);
